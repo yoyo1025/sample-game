@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10×10のマス目</title>
+    <style>
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(10, 55px);
+            grid-template-rows: repeat(10, 55px);
+            gap: 5px;
+        }
+        .cell {
+            width: 55px;
+            height: 55px;
+            background-color: #ccc;
+            border: 1px solid #999;
+            cursor: pointer;
+        }
+        .event-cell {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+<div id="grid"></div>
+
+<script>
+    // グリッド要素を取得
+    const gridElement = document.getElementById('grid');
+    // マス目の情報を保持する配列
+    const cells = [];
+
+    // 10×10のマス目を作成
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            // マス目の要素を作成
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('cell');
+            cellElement.dataset.row = row;
+            cellElement.dataset.col = col;
+
+            // マス目のオブジェクトを作成
+            const cellObj = {
+                userID: null,          // ユーザーID
+                isEventCell: false,    // イベントマスかどうか
+                row: row,              // 行番号
+                col: col,              // 列番号
+                element: cellElement   // マス目の要素
+            };
+
+            // マス目要素にオブジェクトを紐付け
+            cellElement.cellObj = cellObj;
+
+            // クリックイベントを追加
+            cellElement.addEventListener('click', function() {
+                const cell = this.cellObj;
+                // isEventCellをトグル
+                cell.isEventCell = !cell.isEventCell;
+                // 表示を更新
+                if (cell.isEventCell) {
+                    this.classList.add('event-cell');
+                } else {
+                    this.classList.remove('event-cell');
+                }
+                console.log(`マス目 (${cell.row}, ${cell.col}) がクリックされました。イベントマス: ${cell.isEventCell}`);
+            });
+
+            // グリッドにマス目を追加
+            gridElement.appendChild(cellElement);
+
+            // マス目オブジェクトを配列に保存
+            cells.push(cellObj);
+        }
+    }
+</script>
+
+</body>
+</html>
